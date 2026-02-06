@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Butterfly 1-2-1 Spread Scanner</title>
+
+<style>
+
+/* ===== BASE ===== */
+body{
+margin:0;
+font-family:Inter,Segoe UI,Arial;
+background:#050914;
+color:#e6f3ff;
+overflow-x:hidden;
+}
+
+/* ===== NAV ===== */
+.nav{
+position:fixed;
+top:0;
+width:100%;
+background:rgba(8,15,28,.82);
+backdrop-filter:blur(16px);
+border-bottom:1px solid rgba(120,180,255,.15);
+z-index:99;
+}
+.nav-inner{
+max-width:1200px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px 18px;
+flex-wrap:wrap;
+}
+.logo{color:#6ed3ff;font-weight:700;}
+
+.top-social{
+display:flex;
+gap:14px;
+align-items:center;
+flex-wrap:wrap;
+}
+.top-social a:not(.btn){
+color:#9ccfff;
+text-decoration:none;
+font-size:14px;
+transition:.25s;
+}
+.top-social a:not(.btn):hover{color:#6ed3ff;}
+
+.btn{
+background:#6ed3ff;
+color:#021018 !important;
+padding:8px 16px;
+border-radius:10px;
+text-decoration:none;
+font-weight:700;
+box-shadow:0 0 12px rgba(110,211,255,.4);
+}
+
+/* ===== HERO ===== */
+.hero{
+padding-top:120px;
+padding-bottom:40px;
+text-align:center;
+position:relative;
+overflow:hidden;
+}
+.hero::before{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(120deg,#061a2c,#0c2b3f,#061a2c,#0b2033);
+background-size:300% 300%;
+animation:gradientMove 12s ease infinite;
+z-index:-1;
+}
+@keyframes gradientMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.hero h1{font-size:44px;}
+.hero span{color:#6ed3ff;}
+.sub{color:#9bbbd6;font-size:18px;}
+
+/* ===== STAT BAR ===== */
+.statbar{
+display:flex;
+justify-content:center;
+gap:20px;
+margin-top:25px;
+flex-wrap:wrap;
+}
+.stat{
+background:#0c1426;
+border:1px solid rgba(120,180,255,.2);
+padding:12px 18px;
+border-radius:10px;
+animation:pulse 3s infinite;
+}
+@keyframes pulse{
+0%{transform:scale(1)}
+50%{transform:scale(1.05)}
+100%{transform:scale(1)}
+}
+
+/* ===== SECTIONS ===== */
+.container{max-width:1100px;margin:auto;padding:20px;}
+.section{
+margin-top:80px;
+opacity:0;
+transform:translateY(40px);
+transition:.7s;
+}
+.section.show{
+opacity:1;
+transform:translateY(0);
+}
+.section h2{color:#6ed3ff;}
+
+img,video{
+width:100%;
+border-radius:14px;
+margin-top:18px;
+box-shadow:0 0 30px rgba(0,0,0,.6);
+}
+
+/* ===== RANGE BOX ===== */
+.range-box{
+background:#0c1426;
+padding:32px;
+border-radius:14px;
+border:1px solid rgba(120,180,255,.2);
+border-left:4px solid #6ed3ff;
+line-height:1.7;
+}
+.range-box ul{
+margin-top:12px;
+padding-left:18px;
+color:#c6dcff;
+}
+.range-box li{
+margin:6px 0;
+}
+
+/* ===== INNER 2x2 GRID ===== */
+.inner-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:18px;
+margin-top:20px;
+}
+.inner-card{
+background:#091323;
+border-radius:12px;
+padding:18px;
+border:1px solid rgba(120,180,255,.15);
+}
+.inner-card h4{
+margin:0 0 8px;
+color:#6ed3ff;
+font-size:16px;
+}
+.inner-card ul{
+padding-left:16px;
+margin:0;
+font-size:14px;
+color:#c6dcff;
+}
+
+/* ===== CAROUSEL ===== */
+.carousel{
+position:relative;
+overflow:hidden;
+border-radius:14px;
+margin-top:20px;
+}
+.carousel-track{
+display:flex;
+transition:transform .5s ease;
+}
+.carousel img{
+min-width:100%;
+}
+.carousel-btn{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+background:rgba(0,0,0,.5);
+border:none;
+color:white;
+font-size:22px;
+padding:10px 14px;
+cursor:pointer;
+}
+.prev{left:10px;}
+.next{right:10px;}
+
+/* ===== PRICE BOX ===== */
+.price-box{
+margin-top:60px;
+text-align:center;
+background:#0c1426;
+padding:40px;
+border-radius:16px;
+border:1px solid rgba(120,180,255,.2);
+}
+.buy{
+margin-top:20px;
+background:#6ed3ff;
+color:#021018;
+padding:16px 28px;
+border:none;
+font-size:18px;
+border-radius:10px;
+cursor:pointer;
+}
+
+.footer{
+margin:60px 0 40px;
+text-align:center;
+color:#6f8aa6;
+}
+
+/* ===== FLOAT CTA ===== */
+.float-cta{
+position:fixed;
+bottom:25px;
+right:25px;
+background:#6ed3ff;
+color:#021018;
+padding:14px 22px;
+border-radius:40px;
+font-weight:700;
+text-decoration:none;
+box-shadow:0 0 25px rgba(110,211,255,.5);
+z-index:999;
+animation:floatPulse 2.5s infinite;
+}
+@keyframes floatPulse{
+0%{transform:scale(1)}
+50%{transform:scale(1.08)}
+100%{transform:scale(1)}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+<div class="nav-inner">
+<div class="logo">Butterfly 1-2-1 Scanner</div>
+<div class="top-social">
+<a href="https://t.me/VinayRai59">Telegram</a>
+<a href="https://www.instagram.com/quantflow59/">Instagram</a>
+<a href="https://x.com/QuantFlow59">Twitter</a>
+<a href="https://youtube.com/@quantflow59">YouTube</a>
+<a href="https://wa.me/919306793052" class="btn">WhatsApp</a>
+</div>
+</div>
+</div>
+
+<div class="hero">
+<h1>Butterfly <span>1-2-1 Spread Scanner</span></h1>
+<p class="sub">
+Auto Butterfly Engine with <b>Best Call / Best Put AI Selection</b>, live range filtering and a quant-style dashboard.
+</p>
+
+<div class="statbar">
+<div class="stat">🦋 Auto 1-2-1 Engine</div>
+<div class="stat">📊 Live Profit Zones</div>
+<div class="stat">🤖 Best Call / Put</div>
+<div class="stat">⚡ C++ Low-Latency Core</div>
+</div>
+</div>
+
+<div class="container">
+
+<div class="section reveal">
+<h2>Live Dashboard</h2>
+<img src="dashboard.png">
+</div>
+
+<div class="section reveal">
+<h2>📸 Dashboard Preview</h2>
+<div class="carousel">
+<div class="carousel-track" id="track">
+<img src="img1.png">
+<img src="img2.png">
+<img src="img3.png">
+</div>
+<button class="carousel-btn prev" onclick="moveSlide(-1)">❮</button>
+<button class="carousel-btn next" onclick="moveSlide(1)">❯</button>
+</div>
+</div>
+
+<!-- RANGE FILTER WITH 2x2 GRID -->
+<div class="section reveal">
+<h2>🎯 Range-Based Opportunity Filter</h2>
+
+<div class="range-box">
+<p>
+Define your trading zone and instantly filter butterfly setups aligned with your market structure.
+</p>
+
+<ul>
+<li>Visual range-based filtering</li>
+<li>Cleaner CE & PE comparison</li>
+<li>Noise-free opportunity scanning</li>
+<li>Structured decision flow</li>
+</ul>
+
+<div class="inner-grid">
+
+<div class="inner-card">
+<h4>Smart Range Scan</h4>
+<ul>
+<li>Auto strike alignment</li>
+<li>Zone focused setups</li>
+</ul>
+</div>
+
+<div class="inner-card">
+<h4>Cleaner View</h4>
+<ul>
+<li>Less chart noise</li>
+<li>Faster comparison</li>
+</ul>
+</div>
+
+<div class="inner-card">
+<h4>Structured Logic</h4>
+<ul>
+<li>Balanced risk zones</li>
+<li>Better entry clarity</li>
+</ul>
+</div>
+
+<div class="inner-card">
+<h4>Quant Workflow</h4>
+<ul>
+<li>Systematic scanning</li>
+<li>Consistent structure</li>
+</ul>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- DEMO VIDEO BACK -->
+<div class="section reveal">
+<h2>🎬 Platform Demo</h2>
+<video autoplay muted loop controls>
+<source src="demo.webm" type="video/webm">
+</video>
+</div>
+
+<!-- PRICE BOX BACK -->
+<div class="section reveal price-box">
+<h2>🔥 Butterfly 1-2-1 Scanner — Lifetime License</h2>
+<p>Launch Access Price</p>
+<h1>₹4999</h1>
+<a href="https://wa.me/919306793052">
+<button class="buy">Get Access via WhatsApp</button>
+</a>
+</div>
+
+<div class="footer">© Butterfly 1-2-1 Spread Scanner</div>
+
+</div>
+
+<a href="https://wa.me/919306793052" class="float-cta">💬 Get Access</a>
+
+<script>
+const reveals=document.querySelectorAll(".reveal");
+function revealOnScroll(){
+const trigger=window.innerHeight*0.85;
+reveals.forEach(el=>{
+if(el.getBoundingClientRect().top<trigger){
+el.classList.add("show");
+}
+});
+}
+window.addEventListener("scroll",revealOnScroll);
+revealOnScroll();
+
+let index=0;
+function moveSlide(dir){
+const track=document.getElementById("track");
+const slides=track.children.length;
+index=(index+dir+slides)%slides;
+track.style.transform=`translateX(-${index*100}%)`;
+}
+setInterval(()=>moveSlide(1),4000);
+</script>
+
+</body>
+</html>
+
